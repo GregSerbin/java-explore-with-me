@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 import ru.practicum.DateFormat;
 import ru.practicum.endpointhit.model.EndpointHit;
 import ru.practicum.endpointhit.repository.EndpointHitRepository;
+import ru.practicum.exception.DataTimeException;
 import ru.practicum.statsview.model.StatsView;
 
 import java.net.URLDecoder;
@@ -32,6 +33,12 @@ public class EndpointHitServiceImpl implements EndpointHitService {
     @Override
     public List<StatsView> findByParams(String start, String end, List<String> uris, boolean unique) {
         List<StatsView> listViewStats;
+        LocalDateTime startTime = decodeTime(start);
+        LocalDateTime endTime = decodeTime(end);
+
+        if (startTime.isAfter(endTime)) {
+            throw new DataTimeException("Время начала должно быть раньше времени окончания.");
+        }
 
         if (CollectionUtils.isEmpty(uris)) {
             uris = endpointHitRepository.findUniqueUri();

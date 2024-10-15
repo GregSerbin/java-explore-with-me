@@ -1,10 +1,10 @@
 package ru.practicum;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +26,7 @@ public class StatClient {
         log.info("URL запуска сервера статистики: {}", serverUrl);
     }
 
+    @SneakyThrows
     public void saveHit(String app, HttpServletRequest request) {
         log.info("Сохранение вызова для приложения: {}", app);
         EndpointHitDto endpointHitDto = toDto(app, request);
@@ -40,10 +41,11 @@ public class StatClient {
         } else {
             log.error("Отправлен вызов url с кодом ошибки: {}", response.getStatusCode());
         }
+        Thread.sleep(500);
     }
 
-    public ResponseEntity<List<StatsViewDto>> getStats(LocalDateTime start, LocalDateTime end,
-                                                       List<String> uris, boolean unique) {
+    public List<StatsViewDto> getStats(LocalDateTime start, LocalDateTime end,
+                                       List<String> uris, boolean unique) {
         log.info("Получение статистики для urls: {}", uris);
         try {
             return restClient.get()
@@ -62,7 +64,7 @@ public class StatClient {
                     });
         } catch (Exception e) {
             log.error("Получение статистики для {} завершилось ошибкой.", uris, e);
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.SERVICE_UNAVAILABLE);
+            return Collections.emptyList();
         }
     }
 

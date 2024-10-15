@@ -22,7 +22,7 @@ public class EndpointHitController {
     private final EndpointHitMapper endpointHitMapper;
     private final StatsViewMapper viewStatsMapper;
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("hit")
     public void save(@Valid @RequestBody EndpointHitDto endpointHitDto) {
         log.info("Получен запрос на сохранение статистики {}", endpointHitDto);
