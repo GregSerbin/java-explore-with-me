@@ -15,9 +15,10 @@ import ru.practicum.errorHandler.NotFoundException;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
+@Transactional(readOnly = true)
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
@@ -65,7 +66,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Category> getAllCategories(int from, int size) {
         log.info("Начало процесса поиска всех категорий");
         PageRequest pageRequest = PageRequest.of(from, size);
@@ -83,7 +83,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Category getCategory(long catId) {
         log.info("Начало процесса поиска категории по id");
         Category category = categoryRepository.findById(catId).orElseThrow(

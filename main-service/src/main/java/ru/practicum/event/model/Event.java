@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Event {

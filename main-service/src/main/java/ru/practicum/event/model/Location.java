@@ -8,7 +8,6 @@ import lombok.*;
 @Table(name = "location")
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location {

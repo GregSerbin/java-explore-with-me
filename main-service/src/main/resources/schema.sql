@@ -1,62 +1,61 @@
-drop table if exists users, categories, location, events, requests, compilations, compilations_events;
+DROP TABLE IF EXISTS users, categories, location, events, requests, compilations, compilations_events;
 
-create table if not exists users
+CREATE TABLE IF NOT EXISTS users
 (
-    id    bigint generated always as identity primary key,
-    email varchar(255) not null unique,
-    name  varchar(255) not null
+    id    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    name  VARCHAR(255) NOT NULL
 );
 
-create table if not exists categories
+CREATE TABLE IF NOT EXISTS categories
 (
-    id   bigint generated always as identity primary key,
-    name varchar(100) not null
+    id   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
 );
 
-create table if not exists location
+CREATE TABLE IF NOT EXISTS location
 (
-    id  bigint generated always as identity primary key,
-    lat float not null,
-    lon float not null
+    id  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    lat FLOAT NOT NULL,
+    lon FLOAT NOT NULL
 );
 
-create table if not exists events
+CREATE TABLE IF NOT EXISTS events
 (
-    id                 bigint generated always as identity primary key,
-    annotation         varchar,
-    category_id        bigint REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    id                 BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    annotation         VARCHAR,
+    category_id        BIGINT REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE,
     created_on         TIMESTAMP NOT NULL,
-    description        varchar   NOT NULL,
+    description        VARCHAR   NOT NULL,
     event_date         TIMESTAMP NOT NULL,
-    initiator_id       bigint REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    location_id        bigint REFERENCES location (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    initiator_id       BIGINT REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    location_id        BIGINT REFERENCES location (id) ON DELETE CASCADE ON UPDATE CASCADE,
     paid               BOOLEAN   NOT NULL,
     participant_limit  INTEGER   NOT NULL,
     published_on       TIMESTAMP,
     request_moderation BOOLEAN   NOT NULL,
-    state              varchar   NOT NULL,
-    title              varchar   NOT NULL,
+    state              VARCHAR   NOT NULL,
+    title              VARCHAR   NOT NULL,
     confirmed_requests INTEGER
 );
 
-create table if not exists requests
+CREATE TABLE IF NOT EXISTS requests
 (
-    id           bigint generated always as identity primary key,
-    created      TIMESTAMP   not null,
-    event_id     bigint REFERENCES events (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    requester_id bigint REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    status       varchar(20) NOT NULL
+    id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    created      TIMESTAMP   NOT NULL,
+    event_id     BIGINT REFERENCES events (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    requester_id BIGINT REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    status       VARCHAR(20) NOT NULL
 );
-create table if not exists compilations
+CREATE TABLE IF NOT EXISTS compilations
 (
-    id     bigint generated always as identity primary key,
-    pinned boolean      not null,
-    title  varchar(255) not null
-);
-
-create table if not exists compilations_events
-(
-    compilation_id bigint references compilations (id),
-    event_id       bigint references events (id)
+    id     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    pinned BOOLEAN      NOT NULL,
+    title  VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS compilations_events
+(
+    compilation_id BIGINT REFERENCES compilations (id),
+    event_id       BIGINT REFERENCES events (id)
+);

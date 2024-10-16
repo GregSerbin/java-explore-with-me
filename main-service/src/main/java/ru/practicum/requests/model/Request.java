@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

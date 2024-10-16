@@ -8,7 +8,6 @@ import lombok.*;
 @Table(name = "users")
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
