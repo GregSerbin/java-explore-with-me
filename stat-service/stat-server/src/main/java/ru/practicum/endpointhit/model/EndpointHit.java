@@ -3,7 +3,6 @@ package ru.practicum.endpointhit.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
 public class EndpointHit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
