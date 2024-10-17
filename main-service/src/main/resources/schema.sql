@@ -1,10 +1,11 @@
-DROP TABLE IF EXISTS users, categories, location, events, requests, compilations, compilations_events;
+DROP TABLE IF EXISTS users, categories, location, events, requests, compilations, compilations_events CASCADE;
 
 CREATE TABLE IF NOT EXISTS users
 (
     id    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
-    name  VARCHAR(255) NOT NULL
+    name  VARCHAR(255) NOT NULL,
+    rating INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS categories
@@ -36,7 +37,8 @@ CREATE TABLE IF NOT EXISTS events
     request_moderation BOOLEAN   NOT NULL,
     state              VARCHAR   NOT NULL,
     title              VARCHAR   NOT NULL,
-    confirmed_requests INTEGER
+    confirmed_requests INTEGER   NOT NULL,
+    rating             INTEGER   NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS requests
@@ -58,4 +60,13 @@ CREATE TABLE IF NOT EXISTS compilations_events
 (
     compilation_id BIGINT REFERENCES compilations (id),
     event_id       BIGINT REFERENCES events (id)
+);
+
+CREATE TABLE IF NOT EXISTS likes
+(
+    id         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    event_id   BIGINT REFERENCES events (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    user_id    BIGINT REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    status     VARCHAR(8) NOT NULL,
+    created    TIMESTAMP
 );

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.category.model.Category;
 import ru.practicum.user.model.User;
 
@@ -13,8 +14,10 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,6 +81,10 @@ public class Event {
 
     @Column(name = "confirmed_requests")
     Long confirmedRequests;
+
+    @NotNull
+    @Column
+    Long rating;
 
     @Transient
     Long views;

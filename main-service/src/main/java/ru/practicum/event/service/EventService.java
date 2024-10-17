@@ -32,7 +32,7 @@ public interface EventService {
     EventFullDto getPublicEventById(long id);
 
     List<EventFullDto> getAllAdminEvents(List<Long> users, State state, List<Long> categories, LocalDateTime rangeStart,
-                                         LocalDateTime rangeEnd, int from, int size);
+                                         LocalDateTime rangeEnd, int from, int size, boolean sortRating);
 
     EventFullDto updateEventAdmin(UpdateEventAdminRequest updateEventAdminRequest, long eventId);
 }

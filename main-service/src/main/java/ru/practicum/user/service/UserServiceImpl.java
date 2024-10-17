@@ -41,11 +41,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<UserDto> getAllUsersBySortRating(int from, int size) {
+        PageRequest pageRequest = PageRequest.of(from, size, Sort.by(Sort.Direction.DESC, "rating"));
+        List<User> users = userRepository.findAll(pageRequest).getContent();
+        return userMapper.listUserToListUserDto(users);
+    }
+
+    @Override
     public UserDto createUser(UserRequestDto requestDto) {
         User user = userMapper.userRequestDtoToUser(requestDto);
         userRepository.findUserByEmail(user.getEmail()).ifPresent(u -> {
             throw new IntegrityViolationException(String.format("Пользователь с email=%s уже существует", u.getEmail()));
         });
+        user.setRating(0L);
         userRepository.save(user);
         return userMapper.userToUserDto(user);
     }
