@@ -11,4 +11,5 @@ public class UserDto {
     String email;
     Long id;
     String name;
+    Long rating;
 }

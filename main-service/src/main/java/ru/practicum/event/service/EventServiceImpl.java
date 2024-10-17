@@ -85,6 +85,7 @@ public class EventServiceImpl implements EventService {
         newEvent.setPublishedOn(LocalDateTime.now());
         newEvent.setState(State.PENDING);
         newEvent.setConfirmedRequests(0L);
+        newEvent.setRating(0L);
 
         Event event = eventRepository.save(newEvent);
         EventFullDto eventFullDto = eventMapper.eventToEventFullDto(event);
@@ -316,10 +317,17 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     @Override
     public List<EventFullDto> getAllAdminEvents(List<Long> users, State state, List<Long> categories,
-                                                LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
+                                                LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size, boolean sortRating) {
         log.info("Начало процесса получения события админом");
         Page<Event> pageEvents;
-        PageRequest pageRequest = getCustomPage(from, size, null);
+        PageRequest pageRequest;
+
+        if (sortRating) {
+            pageRequest = getCustomPage(from, size, EventPublicSort.RATING);
+        } else {
+            pageRequest = getCustomPage(from, size, null);
+        }
+
         BooleanBuilder builder = new BooleanBuilder();
 
         if (!CollectionUtils.isEmpty(users) && !users.contains(0L)) {
@@ -432,6 +440,7 @@ public class EventServiceImpl implements EventService {
             return switch (sort) {
                 case EVENT_DATE -> PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "eventDate"));
                 case VIEWS -> PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "views"));
+                case RATING -> PageRequest.of(from, size, Sort.by(Sort.Direction.DESC, "rating"));
             };
         } else {
             return PageRequest.of(from, size);
