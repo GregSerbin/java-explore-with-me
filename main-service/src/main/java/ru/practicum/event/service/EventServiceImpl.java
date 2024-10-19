@@ -191,6 +191,7 @@ public class EventServiceImpl implements EventService {
         if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
             event.setTitle(updateEvent.getTitle());
         }
+
         if (updateEvent.getStateAction() != null) {
             switch (updateEvent.getStateAction()) {
                 case CANCEL_REVIEW -> event.setState(State.CANCELED);
@@ -406,6 +407,7 @@ public class EventServiceImpl implements EventService {
         if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
             event.setTitle(updateEvent.getTitle());
         }
+
         if (updateEvent.getStateAction() != null) {
             setStateByAdmin(event, updateEvent.getStateAction());
         }

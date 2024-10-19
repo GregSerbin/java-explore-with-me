@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.like.model.StatusLike;
@@ -12,6 +13,7 @@ import ru.practicum.like.service.LikeService;
 @Slf4j
 @RestController
 @RequestMapping("/event/{eventId}/like/{userId}")
+@Validated
 @RequiredArgsConstructor
 public class LikeController {
     private final LikeService likeService;
