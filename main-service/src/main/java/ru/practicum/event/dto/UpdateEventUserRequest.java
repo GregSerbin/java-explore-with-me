@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateEventUserRequest {
+public class UpdateEventUserRequest implements UpdateEventRequest {
     @Size(min = 20, max = 2000)
     String annotation;
     @Positive

@@ -40,7 +40,7 @@ public class EventPrivateController {
     @GetMapping("/{eventId}")
     public EventFullDto findEventById(@PathVariable long userId,
                                       @PathVariable long eventId,
-                                      HttpServletRequest request) throws InterruptedException {
+                                      HttpServletRequest request) {
         log.info("Получен запрос на получение события с id={} от пользователя с id={}", eventId, userId);
         EventFullDto event = eventService.findEventById(userId, eventId);
         statClient.saveHit(appConfig.getAppName(), request);
