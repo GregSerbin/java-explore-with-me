@@ -110,16 +110,6 @@ public class LikeServiceImpl implements LikeService {
         likeRepository.delete(like);
         changeRatingUserAndEvent(event, statusLike, DIFFERENCE_RATING_BY_DELETE);
 
-//        Optional<Like> likeOptional = likeRepository.findByEventAndUser(event, user);
-
-//        if (likeOptional.isPresent()) {
-//            Like like = likeOptional.get();
-//            StatusLike statusLike = like.getStatus();
-//            likeRepository.delete(like);
-//            changeRatingUserAndEvent(event, statusLike, DIFFERENCE_RATING_BY_DELETE);
-//        } else {
-//            throw new RestrictionsViolationException("Вы еще не оценивали событие");
-//        }
         log.info("Реакция была удалена");
     }
 

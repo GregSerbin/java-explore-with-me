@@ -158,39 +158,7 @@ public class EventServiceImpl implements EventService {
             throw new RestrictionsViolationException("Вы можете модифицировать только отмененные события или те события, которые находятся в статусе ожидания модерации");
         }
 
-        if (updateEvent.getAnnotation() != null && !updateEvent.getAnnotation().isBlank()) {
-            event.setAnnotation(updateEvent.getAnnotation());
-        }
-        if (updateEvent.getCategory() != null) {
-            Category category = categoryRepository.findById(updateEvent.getCategory())
-                    .orElseThrow(() -> new NotFoundException(String.format("Категория с id=%d не существует", updateEvent.getCategory())));
-            event.setCategory(category);
-        }
-        if (updateEvent.getDescription() != null && !updateEvent.getDescription().isBlank()) {
-            event.setDescription(updateEvent.getDescription());
-        }
-        if (updateEvent.getEventDate() != null) {
-            if (updateEvent.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-                throw new DataTimeException("Дата и время запланированного события не могут быть менее 2-х часов от текущего момента");
-            } else {
-                event.setEventDate(updateEvent.getEventDate());
-            }
-        }
-        if (updateEvent.getLocation() != null) {
-            event.setLocation(updateEvent.getLocation());
-        }
-        if (updateEvent.getPaid() != null) {
-            event.setPaid(updateEvent.getPaid());
-        }
-        if (updateEvent.getParticipantLimit() != null) {
-            event.setParticipantLimit(updateEvent.getParticipantLimit());
-        }
-        if (updateEvent.getRequestModeration() != null) {
-            event.setRequestModeration(updateEvent.getRequestModeration());
-        }
-        if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
-            event.setTitle(updateEvent.getTitle());
-        }
+        updateEvent(event, updateEvent);
 
         if (updateEvent.getStateAction() != null) {
             switch (updateEvent.getStateAction()) {
@@ -374,39 +342,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Событие с id=%d не существует", eventId)));
 
-        if (updateEvent.getAnnotation() != null && !updateEvent.getAnnotation().isBlank()) {
-            event.setAnnotation(updateEvent.getAnnotation());
-        }
-        if (updateEvent.getCategory() != null) {
-            Category category = categoryRepository.findById(updateEvent.getCategory())
-                    .orElseThrow(() -> new NotFoundException(String.format("Категория с id=%d не существует", updateEvent.getCategory())));
-            event.setCategory(category);
-        }
-        if (updateEvent.getDescription() != null && !updateEvent.getDescription().isBlank()) {
-            event.setDescription(updateEvent.getDescription());
-        }
-        if (updateEvent.getEventDate() != null) {
-            if (updateEvent.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-                throw new DataTimeException("Дата и время запланированного события не могут быть менее 2-х часов от текущего момента");
-            } else {
-                event.setEventDate(updateEvent.getEventDate());
-            }
-        }
-        if (updateEvent.getLocation() != null) {
-            event.setLocation(updateEvent.getLocation());
-        }
-        if (updateEvent.getPaid() != null) {
-            event.setPaid(updateEvent.getPaid());
-        }
-        if (updateEvent.getParticipantLimit() != null) {
-            event.setParticipantLimit(updateEvent.getParticipantLimit());
-        }
-        if (updateEvent.getRequestModeration() != null) {
-            event.setRequestModeration(updateEvent.getRequestModeration());
-        }
-        if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
-            event.setTitle(updateEvent.getTitle());
-        }
+        updateEvent(event, updateEvent);
 
         if (updateEvent.getStateAction() != null) {
             setStateByAdmin(event, updateEvent.getStateAction());
@@ -469,6 +405,42 @@ public class EventServiceImpl implements EventService {
 
         for (Event event : events) {
             event.setViews(mapUriAndHits.getOrDefault("/events/" + event.getId(), 0L));
+        }
+    }
+
+    private void updateEvent(Event event, UpdateEventRequest updateEventRequest) {
+        if (updateEventRequest.getAnnotation() != null && !updateEventRequest.getAnnotation().isBlank()) {
+            event.setAnnotation(updateEventRequest.getAnnotation());
+        }
+        if (updateEventRequest.getCategory() != null) {
+            Category category = categoryRepository.findById(updateEventRequest.getCategory())
+                    .orElseThrow(() -> new NotFoundException(String.format("Категория с id=%d не существует", updateEventRequest.getCategory())));
+            event.setCategory(category);
+        }
+        if (updateEventRequest.getDescription() != null && !updateEventRequest.getDescription().isBlank()) {
+            event.setDescription(updateEventRequest.getDescription());
+        }
+        if (updateEventRequest.getEventDate() != null) {
+            if (updateEventRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
+                throw new DataTimeException("Дата и время запланированного события не могут быть менее 2-х часов от текущего момента");
+            } else {
+                event.setEventDate(updateEventRequest.getEventDate());
+            }
+        }
+        if (updateEventRequest.getLocation() != null) {
+            event.setLocation(updateEventRequest.getLocation());
+        }
+        if (updateEventRequest.getPaid() != null) {
+            event.setPaid(updateEventRequest.getPaid());
+        }
+        if (updateEventRequest.getParticipantLimit() != null) {
+            event.setParticipantLimit(updateEventRequest.getParticipantLimit());
+        }
+        if (updateEventRequest.getRequestModeration() != null) {
+            event.setRequestModeration(updateEventRequest.getRequestModeration());
+        }
+        if (updateEventRequest.getTitle() != null && !updateEventRequest.getTitle().isBlank()) {
+            event.setTitle(updateEventRequest.getTitle());
         }
     }
 }
